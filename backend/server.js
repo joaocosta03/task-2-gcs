@@ -26,6 +26,7 @@ app.get('/dados', async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log('Servidor rodando na porta ${port}');   
+    console.log(`Servidor rodando na porta ${port}`);   
 });
 
+app.use(express.static(path.resolve(__dirname, '../frontend')));
