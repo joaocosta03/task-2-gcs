@@ -1,4 +1,4 @@
-fetch('http://localhost:3000/dados')
+fetch(`${window.location.origin}/dados`)
     .then(res => res.json())
     .then(data => {
         const head = document.getElementById('tabela-head');
