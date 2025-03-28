@@ -1,11 +1,14 @@
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
+const path = require('path');
+
 
 const app = express();
 const port = 3000;
 
 app.use(cors());
+app.use(express.static(path.resolve(__dirname, '../frontend')));
 
 const pool = new Pool({
     user: process.env.DB_USER,
@@ -29,4 +32,8 @@ app.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`);   
 });
 
-app.use(express.static(path.resolve(__dirname, '../frontend')));
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../frontend/index.html'));
+});
+
+
