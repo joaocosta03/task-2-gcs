@@ -2,13 +2,14 @@ const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
 const path = require('path');
-
+const tarefaRoutes = require('./routes/tarefa');
 
 const app = express();
 const port = 3000;
 
 app.use(cors());
-app.use(express.static(path.resolve(__dirname, '../frontend')));
+app.use(express.json());
+app.use('/tarefas', tarefaRoutes);
 
 const pool = new Pool({
     user: process.env.DB_USER,
@@ -30,10 +31,6 @@ app.get('/dados', async (req, res) => {
 
 app.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`);   
-});
-
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../frontend/index.html'));
 });
 
 
