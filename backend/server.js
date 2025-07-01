@@ -3,6 +3,7 @@ const { Pool } = require('pg');
 const cors = require('cors');
 const path = require('path');
 const tarefaRoutes = require('./routes/tarefa');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const port = 3000;
@@ -10,6 +11,7 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 app.use('/tarefas', tarefaRoutes);
+app.use('/auth', authRoutes);
 
 const pool = new Pool({
     user: process.env.DB_USER,

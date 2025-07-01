@@ -10,7 +10,7 @@ const pool = new Pool({
 
 exports.getTarefas = async (req, res) => {
     try { 
-        const result = await pool.query('SELECT * FROM tarefa ORDER BY id DESC');
+        const result = await pool.query('SELECT * FROM tarefa ORDER BY id');
         res.status(200).json(result.rows);
     } catch (error) {
         console.error('Erro ao listar tarefas:', error);
@@ -22,7 +22,7 @@ exports.createTarefa = async (req, res) => {
     const { descricao, situacao, data_criacao, data_prevista } = req.body;
     try {
         const result = await pool.query(
-            'INSERT INTO tarefa (descricao, situacao, data_criacao, data_prevista) VALUES ($1, $2, $3, $4) RETURNING *', 
+            'INSERT INTO tarefa (id, descricao, situacao, data_criacao, data_prevista) VALUES (DEFAULT, $1, $2, $3, $4) RETURNING *', 
             [descricao, situacao, data_criacao, data_prevista]);
         res.status(201).json(result.rows[0]);
     } catch (error) {
