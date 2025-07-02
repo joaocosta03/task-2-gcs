@@ -13,6 +13,8 @@ app.use(express.json());
 app.use('/tarefas', tarefaRoutes);
 app.use('/auth', authRoutes);
 
+module.exports = app; 
+
 const pool = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
@@ -31,8 +33,10 @@ app.get('/dados', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Servidor rodando na porta ${port}`);   
-});
 
+if (require.main === module) {
+    app.listen(port, () => {
+        console.log(`Servidor rodando na porta ${port}`);   
+    });
+}
 
