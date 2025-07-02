@@ -7,6 +7,8 @@ RUN npm install
 RUN npm install bcrypt
 RUN npm install jsonwebtoken
 RUN npm install cors
+RUN npm install dotenv
+RUN npm install cross-env
 
 COPY . .
 

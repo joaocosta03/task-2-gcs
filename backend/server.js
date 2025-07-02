@@ -1,3 +1,7 @@
+require('dotenv').config({
+  path: process.env.NODE_ENV === 'test' ? '.env.test' : undefined
+});
+
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
