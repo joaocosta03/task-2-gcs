@@ -25,6 +25,23 @@ const TarefaList = () => {
     }
   };
 
+  const exportarTarefasPDF = async () => {
+    try {
+      const response = await api.get('/pdf/tarefas', {
+        responseType: 'blob',
+      });
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'tarefas.pdf';
+      link.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Erro ao exportar PDF:', error);
+    }
+  };
+
   useEffect(() => {
     loadTasks();
   }, []);
@@ -71,6 +88,13 @@ const TarefaList = () => {
   return (
     <div className="tarefa-list" style={{ padding: '1rem' }}>
       <h2>Lista de Tarefas</h2>
+        <button
+          onClick={exportarTarefasPDF}
+          style={{ marginBottom: '1rem', padding: '0.5rem 1rem', backgroundColor: '#1976d2', color: 'white', border: 'none', borderRadius: '4px' }}
+        >
+          Exportar tarefas em PDF
+        </button>
+
 
     <TarefaForm onSuccess={loadTasks} />
     

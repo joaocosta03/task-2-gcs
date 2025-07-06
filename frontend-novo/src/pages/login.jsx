@@ -14,9 +14,9 @@ export default function Login() {
 		try{
 			const res = await api.post('/auth/login', { email, senha });
 
-			const { token } = res.data;
-
-			localStorage.setItem('token', token);
+			localStorage.setItem('token', res.data.token);
+			localStorage.setItem('email', res.data.email);
+			localStorage.setItem('nome', res.data.nome);
 			navigate('/tarefas');
 		} catch (err) {
 			setErro('Erro ao conectar ao servidor');

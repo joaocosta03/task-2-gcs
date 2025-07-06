@@ -9,13 +9,23 @@ const TarefaForm = ({ onSuccess }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const token = localStorage.getItem('token');
+
         try{
-            await api.post("/tarefas", {
-                descricao,
-                situacao,
-                data_criacao: new Date().toISOString().split("T")[0],
-                data_prevista: dataPrevista
-            });
+            await api.post(
+                "/tarefas",
+                {
+                    descricao,
+                    situacao,
+                    data_criacao: new Date().toISOString().split("T")[0],
+                    data_prevista: dataPrevista,
+                },
+                {
+                    headers: {
+                    Authorization: `Bearer ${token}`, // <-- enviar no header
+                    },
+                }
+                );
             setDescricao("");
             setSituacao("pendente");
             setDataPrevista("");

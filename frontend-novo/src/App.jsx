@@ -3,6 +3,7 @@ import TarefaList from './components/TarefaList';
 import Login from './pages/login';
 import Register from './pages/register';
 import LogoutButton from './components/LogoutButton';
+import UsuarioList from './components/UsuarioList';
 
 
 const RotaPrivada = ({ children }) => {
@@ -25,6 +26,7 @@ function App() {
             <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
               <h1>Gerenciador de Tarefas</h1>
               <TarefaList />
+              <UsuarioList /> 
             </div>
           </RotaPrivada>
         }

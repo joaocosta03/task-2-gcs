@@ -1,4 +1,5 @@
 const {Pool} = require('pg');
+const emailService = require('../services/emailService');
 
 const pool = new Pool({
     user: process.env.DB_USER,
@@ -20,11 +21,23 @@ exports.getTarefas = async (req, res) => {
 
 exports.createTarefa = async (req, res) => {
     const { descricao, situacao, data_criacao, data_prevista } = req.body;
+    const emailUsuario = req.user?.email;
+
     try {
         const result = await pool.query(
             'INSERT INTO tarefa (id, descricao, situacao, data_criacao, data_prevista) VALUES (DEFAULT, $1, $2, $3, $4) RETURNING *', 
             [descricao, situacao, data_criacao, data_prevista]);
         res.status(201).json(result.rows[0]);
+
+        const tarefaCriada = result.rows[0];
+
+        if (emailUsuario) {
+            await emailService.sendEmail(
+                emailUsuario,
+                'Nova Tarefa Criada',
+                `Olá! A tarefa "${tarefaCriada.descricao}" foi criada com sucesso.`
+            );
+        }
     } catch (error) {
         console.error('Erro ao criar tarefa:', error);
         res.status(500).json({ error: 'Erro ao criar tarefa' });

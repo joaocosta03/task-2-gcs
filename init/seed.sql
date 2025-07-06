@@ -8,16 +8,16 @@ CREATE TABLE tarefa (
 );
 
 INSERT INTO tarefa (descricao, situacao, data_criacao, data_prevista, data_encerramento) VALUES
-('Estudar PostgreSQL', 'A', '2021-01-01', '2021-01-10', NULL),
-('Estudar Node.js', 'A', '2021-01-01', '2021-01-10', NULL),
-('Estudar React', 'A', '2021-01-01', '2021-01-10', NULL),
-('Estudar Docker', 'A', '2021-01-01', '2021-01-10', NULL),
-('Estudar Kubernetes', 'A', '2021-01-01', '2021-01-10', NULL),
-('Estudar AWS', 'A', '2021-01-01', '2021-01-10', NULL),
-('Estudar GCP', 'A', '2021-01-01', '2021-01-10', NULL),
-('Estudar Azure', 'A', '2021-01-01', '2021-01-10', NULL),
-('Estudar Java', 'A', '2021-01-01', '2021-01-10', NULL),
-('Estudar Python', 'A', '2021-01-01', '2021-01-10', NULL);
+('Estudar PostgreSQL', 'Concluído', '2021-01-01', '2021-01-10', NULL),
+('Estudar Node.js', 'Concluído', '2021-01-01', '2021-01-10', NULL),
+('Estudar React', 'Concluído', '2021-01-01', '2021-01-10', NULL),
+('Estudar Docker', 'Em andamento', '2021-01-01', '2021-01-10', NULL),
+('Estudar Kubernetes', 'Em andamento', '2021-01-01', '2021-01-10', NULL),
+('Estudar AWS', 'Pendente', '2021-01-01', '2021-01-10', NULL),
+('Estudar GCP', 'Concluído', '2021-01-01', '2021-01-10', NULL),
+('Estudar Azure', 'Concluído', '2021-01-01', '2021-01-10', NULL),
+('Estudar Java', 'Concluído', '2021-01-01', '2021-01-10', NULL),
+('Estudar Python', 'Em andamento', '2021-01-01', '2021-01-10', NULL);
 
 CREATE TABLE usuario (
     id SERIAL PRIMARY KEY,
