@@ -17,5 +17,4 @@ build/
 # Docker volumes
 *.pid
 
-
-data/*
+data/
