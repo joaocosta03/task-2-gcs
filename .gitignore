@@ -1,23 +1,25 @@
-# .gitignore
-
-# Node.js
 node_modules/
-.env
-
-# Logs
-*.log
-
-# React/Vite build
 dist/
 build/
-
-# Editor
+.vite/
 .vscode/
+.env
+.env.*
 
-# Docker volumes
+
+*.log
 *.pid
-
+*.lock
+*.tmp
+*.bak
 
 data/
 *.stat
 *.control
+
+**/data/*
+**/pgdata/*
+
+
+.DS_Store
+Thumbs.db
