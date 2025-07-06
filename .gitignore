@@ -17,7 +17,11 @@ build/
 # Docker volumes
 *.pid
 
+<<<<<<< HEAD
 
 data/
 *.stat
 *.control
+=======
+data/
+>>>>>>> 85011d8b4a40bb668c16d5ca549473af98a7ed73
