@@ -1,5 +1,6 @@
-pipeline:
+steps:
   deploy-homolog:
+    image: docker:latest
     when:
       branch: homolog
     commands:
@@ -8,6 +9,7 @@ pipeline:
       - docker-compose -f docker-compose.homolog.yml -p homolog up -d --build
 
   deploy-prod:
+    image: docker:latest
     when:
       branch: main
     commands:
