@@ -1,0 +1,14 @@
+pipeline:
+  deploy-homolog:
+    when:
+      branch: homolog
+    commands:
+      - git pull origin homolog
+      - docker-compose -f docker-compose.homolog.yml up -d --build
+
+  deploy-prod:
+    when:
+      branch: main
+    commands:
+      - git pull origin main
+      - docker-compose -f docker-compose.prod.yml up -d --build
