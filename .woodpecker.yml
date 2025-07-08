@@ -3,12 +3,14 @@ pipeline:
     when:
       branch: homolog
     commands:
+      - cd /home/univates/project/task-2-gcs
       - git pull origin homolog
-      - docker-compose -f docker-compose.homolog.yml up -d --build
+      - docker-compose -f docker-compose.homolog.yml -p homolog up -d --build
 
   deploy-prod:
     when:
       branch: main
     commands:
+      - cd /home/univates/project/task-2-gcs
       - git pull origin main
-      - docker-compose -f docker-compose.prod.yml up -d --build
+      - docker-compose -f docker-compose.prod.yml -p prod up -d --build
