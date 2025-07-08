@@ -17,9 +17,13 @@ data/
 *.stat
 *.control
 
-**/data/*
-**/pgdata/*
+data*/
+*/data*/
+**/data*/
+pgdata*/
+*/pgdata*/
 
+woodpecker-data/
 
 .DS_Store
 Thumbs.db
