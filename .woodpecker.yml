@@ -1,18 +1,122 @@
 steps:
   deploy-homolog:
     image: docker:latest
+    environment:
+      EMAIL_USER:
+        from_secret: EMAIL_USER
+      EMAIL_PASS:
+        from_secret: EMAIL_PASS
+      JWT_SECRET:
+        from_secret: JWT_SECRET
     when:
       branch: homolog
+      event: 
+        - push
+        - pull_request
     commands:
-      - cd /home/univates/project/task-2-gcs
-      - git pull origin homolog
+      - cd /woodpecker/src/github.com/joaocosta03/task-2-gcs
+
+      - |
+        echo "EMAIL_USER=$EMAIL_USER" > backend/.env.homolog
+        echo "EMAIL_PASS=$EMAIL_PASS" >> backend/.env.homolog
+        echo "JWT_SECRET=$JWT_SECRET" >> backend/.env.homolog
+      
+      - |
+        if docker ps --format '{{.Names}}' | grep -q "^homolog"; then
+          echo "🛑 Stack homolog já está ativa, reiniciando..."
+          docker-compose -f docker-compose.homolog.yml -p homolog down
+        fi
+        
+      # Sobe containers de homologação
       - docker-compose -f docker-compose.homolog.yml -p homolog up -d --build
+
+      # Aguarda a API subir
+      - echo "⏳ Aguardando backend responder..."
+      - |
+        curl --retry 10 --retry-delay 5 --fail http://localhost:3001/login || (
+          echo "❌ API não respondeu, derrubando containers..."
+          docker-compose -f docker-compose.homolog.yml -p homolog down
+          exit 1
+        )
+      - echo "✅ Ambiente de homologação iniciado!"
+
+      # Executa os testes no backend
+      - cd backend
+      - npm install
+      - npm test || (
+          echo "❌ Testes do backend falharam, derrubando containers..."
+          cd ..
+          docker-compose -f docker-compose.homolog.yml -p homolog down
+          exit 1
+        )
+      - echo "✅ Testes do backend concluídos!"
+
+      # Executa os testes no frontend
+      - cd ../frontend-novo
+      - npm install
+      - npx vitest run || (
+          echo "❌ Testes do frontend falharam, derrubando containers..."
+          cd ..
+          docker-compose -f docker-compose.homolog.yml -p homolog down
+          exit 1
+        )
+      - echo "✅ Testes do frontend concluídos!"
+      - echo "✅ Homologação concluída com sucesso!"
 
   deploy-prod:
     image: docker:latest
+    environment:
+      EMAIL_USER:
+        from_secret: EMAIL_USER
+      EMAIL_PASS:
+        from_secret: EMAIL_PASS
+      JWT_SECRET:
+        from_secret: JWT_SECRET
     when:
       branch: main
+      event: 
+        - push
+        - pull_request
     commands:
-      - cd /home/univates/project/task-2-gcs
-      - git pull origin main
+      - cd /woodpecker/src/github.com/joaocosta03/task-2-gcs
+
+      - |
+        echo "EMAIL_USER=$EMAIL_USER" > backend/.env.prod
+        echo "EMAIL_PASS=$EMAIL_PASS" >> backend/.env.prod
+        echo "JWT_SECRET=$JWT_SECRET" >> backend/.env.prod
+
+      # Sobe containers de produção
       - docker-compose -f docker-compose.prod.yml -p prod up -d --build
+
+      # Aguarda a API subir
+      - echo "⏳ Aguardando backend responder..."
+      - |
+        curl --retry 10 --retry-delay 5 --fail http://localhost:3001/login || (
+          echo "❌ API não respondeu, derrubando containers..."
+          docker-compose -f docker-compose.prod.yml -p prod down
+          exit 1
+        )
+      - echo "✅ Ambiente de produção iniciado!"
+
+      # # Executa os testes no backend
+      # - cd backend
+      # - npm install
+      # - npm test || (
+      #     echo "❌ Testes do backend falharam, derrubando containers..."
+      #     cd ..
+      #     docker-compose -f docker-compose.prod.yml -p prod down
+      #     exit 1
+      #   )
+      # - echo "✅ Testes do backend concluídos!"
+
+      # # Executa os testes no frontend
+      # - cd ../frontend-novo
+      # - npm install
+      # - npx vitest run || (
+      #     echo "❌ Testes do frontend falharam, derrubando containers..."
+      #     cd ..
+      #     docker-compose -f docker-compose.prod.yml -p prod down
+      #     exit 1
+      #   )
+      # - echo "✅ Testes do frontend concluídos!"
+      - echo "🚀 Produção implantada com sucesso!"

@@ -1,0 +1,16 @@
+FROM alpine:3.20
+
+# Instala Docker CLI, curl, bash e outras dependências
+RUN apk add --no-cache \
+    docker-cli \
+    bash \
+    curl \
+    git
+
+# Baixa e instala o agente Woodpecker
+RUN curl -L https://github.com/woodpecker-ci/woodpecker/releases/latest/download/woodpecker-agent-linux-amd64 \
+    -o /usr/local/bin/woodpecker-agent && \
+    chmod +x /usr/local/bin/woodpecker-agent
+
+# Define o entrypoint padrão
+CMD ["/usr/local/bin/woodpecker-agent"]
