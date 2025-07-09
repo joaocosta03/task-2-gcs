@@ -2,7 +2,6 @@ pipeline {
   agent any
 
   environment {
-    // As credenciais devem ser definidas no Jenkins e vinculadas aqui
     EMAIL_USER = credentials('EMAIL_USER')
     EMAIL_PASS = credentials('EMAIL_PASS')
     JWT_SECRET = credentials('JWT_SECRET')
@@ -21,14 +20,14 @@ pipeline {
       }
       steps {
         dir('backend') {
-          sh '''
+          sh """
             echo "EMAIL_USER=$EMAIL_USER" > .env.homolog
             echo "EMAIL_PASS=$EMAIL_PASS" >> .env.homolog
             echo "JWT_SECRET=$JWT_SECRET" >> .env.homolog
-          '''
+          """
         }
 
-        sh '''
+        sh """
           if docker ps --format '{{.Names}}' | grep -q "^homolog"; then
             echo "🛑 Stack homolog já está ativa, reiniciando..."
             docker compose -f docker-compose.homolog.yml -p homolog down
@@ -36,34 +35,27 @@ pipeline {
 
           echo "🔧 Subindo containers de homologação..."
           docker compose -f docker-compose.homolog.yml -p homolog up -d --build
-        '''
+        """
 
-        sh '''
-          echo "⏳ Aguardando backend responder..."
-          curl --retry 10 --retry-delay 5 --fail http://177.44.248.65:3001/dados || (
-            echo "❌ API não respondeu, derrubando containers..."
-            docker compose -f docker-compose.homolog.yml -p homolog down
-            exit 1
-          )
-        '''
-
-        sh '''
+        sh """
           echo "🧪 Executando testes do backend..."
           docker exec backend-homolog npm test || (
-            echo "❌ Testes do backend falharam, derrubando containers..."
+            echo "❌ Testes do backend falharam!"
+            docker logs backend-homolog || true
             docker compose -f docker-compose.homolog.yml -p homolog down
             exit 1
           )
-        '''
+        """
 
-        sh '''
+        sh """
           echo "🧪 Executando testes do frontend..."
           docker exec frontend-homolog npx vitest run || (
-            echo "❌ Testes do frontend falharam, derrubando containers..."
+            echo "❌ Testes do frontend falharam!"
+            docker logs frontend-homolog || true
             docker compose -f docker-compose.homolog.yml -p homolog down
             exit 1
           )
-        '''
+        """
 
         echo "✅ Homologação concluída com sucesso!"
       }
@@ -75,23 +67,21 @@ pipeline {
       }
       steps {
         dir('backend') {
-          sh '''
+          sh """
             echo "EMAIL_USER=$EMAIL_USER" > .env.prod
             echo "EMAIL_PASS=$EMAIL_PASS" >> .env.prod
             echo "JWT_SECRET=$JWT_SECRET" >> .env.prod
-          '''
+          """
         }
 
-        sh '''
-          docker compose -f docker-compose.prod.yml -p prod up -d --build
-
-          echo "⏳ Aguardando backend responder..."
-          curl --retry 10 --retry-delay 5 --fail http://177.44.248.65:3002/dados || (
-            echo "❌ API não respondeu, derrubando containers..."
+        sh """
+          if docker ps --format '{{.Names}}' | grep -q "^prod"; then
             docker compose -f docker-compose.prod.yml -p prod down
-            exit 1
-          )
-        '''
+          fi
+
+          echo "🚀 Subindo containers de produção..."
+          docker compose -f docker-compose.prod.yml -p prod up -d --build
+        """
 
         echo "🚀 Produção implantada com sucesso!"
       }
