@@ -3,6 +3,9 @@ steps:
     image: docker:latest
     when:
       branch: homolog
+      event: 
+        - push
+        - pull_request
     commands:
       - cd /home/univates/project/task-2-gcs
       - git pull origin homolog
@@ -12,6 +15,9 @@ steps:
     image: docker:latest
     when:
       branch: main
+      event: 
+        - push
+        - pull_request    
     commands:
       - cd /home/univates/project/task-2-gcs
       - git pull origin main
