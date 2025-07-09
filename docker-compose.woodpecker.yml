@@ -13,7 +13,7 @@ services:
       - WOODPECKER_GITHUB=true
       - WOODPECKER_GITHUB_CLIENT=Ov23li1MPgMgd1CQFDCc
       - WOODPECKER_GITHUB_SECRET=3936ee709466e97ee2696a62ada9447fecf4dadc
-      - WOODPECKER_SECRET=5GTPjyLtgHFEvE0FFN0764eJ29Y
+      - WOODPECKER_AGENT_SECRET=5GTPjyLtgHFEvE0FFN0764eJ29Y
       - WOODPECKER_GRPC_ADDR=:9000
     volumes:
       - woodpecker-data:/var/lib/woodpecker
@@ -27,7 +27,7 @@ services:
       - woodpecker-server
     environment:
       - WOODPECKER_SERVER=woodpecker-server:9000
-      - WOODPECKER_SECRET=5GTPjyLtgHFEvE0FFN0764eJ29Y
+      - WOODPECKER_AGENT_SECRET=5GTPjyLtgHFEvE0FFN0764eJ29Y
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
