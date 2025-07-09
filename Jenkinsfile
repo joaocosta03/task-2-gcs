@@ -24,6 +24,9 @@ pipeline {
             echo "EMAIL_USER=$EMAIL_USER" > .env.homolog
             echo "EMAIL_PASS=$EMAIL_PASS" >> .env.homolog
             echo "JWT_SECRET=$JWT_SECRET" >> .env.homolog
+			echo "EMAIL_USER=$EMAIL_USER" > .env.test
+            echo "EMAIL_PASS=$EMAIL_PASS" >> .env.test
+            echo "JWT_SECRET=$JWT_SECRET" >> .env.test
           """
         }
 
