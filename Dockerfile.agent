@@ -1,0 +1,4 @@
+# Dockerfile.agent
+FROM woodpeckerci/woodpecker-agent:latest
+
+RUN apk add --no-cache docker-cli

@@ -19,7 +19,9 @@ services:
       - woodpecker-data:/var/lib/woodpecker
 
   woodpecker-agent:
-    image: woodpeckerci/woodpecker-agent:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.agent
     container_name: woodpecker-agent
     command: agent
     restart: always
