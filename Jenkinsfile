@@ -39,7 +39,7 @@ pipeline {
 
         sh """
           echo "🧪 Executando testes do backend..."
-          docker exec backend-homolog cross-env NODE_ENV=test npm test || (
+          docker exec -e NODE_ENV=test backend-homolog npm test || (
             echo "❌ Testes do backend falharam!"
             docker logs backend-homolog || true
             docker compose -f docker-compose.homolog.yml -p homolog down
