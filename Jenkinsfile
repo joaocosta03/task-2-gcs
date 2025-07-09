@@ -31,16 +31,16 @@ pipeline {
         sh """
           if docker ps --format '{{.Names}}' | grep -q "^homolog"; then
             echo "🛑 Stack homolog já está ativa, reiniciando..."
-            docker-compose -f docker-compose.homolog.yml -p homolog down
+            docker compose -f docker-compose.homolog.yml -p homolog down
           fi
 
           echo "🔧 Subindo containers de homologação..."
-          docker-compose -f docker-compose.homolog.yml -p homolog up -d --build
+          docker compose -f docker-compose.homolog.yml -p homolog up -d --build
 
           echo "⏳ Aguardando backend responder..."
           curl --retry 10 --retry-delay 5 --fail http://localhost:3001/login || (
             echo "❌ API não respondeu, derrubando containers..."
-            docker-compose -f docker-compose.homolog.yml -p homolog down
+            docker compose -f docker-compose.homolog.yml -p homolog down
             exit 1
           )
         """
@@ -51,7 +51,7 @@ pipeline {
             npm test || (
               echo "❌ Testes do backend falharam, derrubando containers..."
               cd ..
-              docker-compose -f docker-compose.homolog.yml -p homolog down
+              docker compose -f docker-compose.homolog.yml -p homolog down
               exit 1
             )
           """
@@ -63,7 +63,7 @@ pipeline {
             npx vitest run || (
               echo "❌ Testes do frontend falharam, derrubando containers..."
               cd ..
-              docker-compose -f docker-compose.homolog.yml -p homolog down
+              docker compose -f docker-compose.homolog.yml -p homolog down
               exit 1
             )
           """
@@ -87,12 +87,12 @@ pipeline {
         }
 
         sh """
-          docker-compose -f docker-compose.prod.yml -p prod up -d --build
+          docker compose -f docker-compose.prod.yml -p prod up -d --build
 
           echo "⏳ Aguardando backend responder..."
           curl --retry 10 --retry-delay 5 --fail http://localhost:3001/login || (
             echo "❌ API não respondeu, derrubando containers..."
-            docker-compose -f docker-compose.prod.yml -p prod down
+            docker compose -f docker-compose.prod.yml -p prod down
             exit 1
           )
         """
