@@ -40,7 +40,7 @@ pipeline {
 
         sh '''
           echo "⏳ Aguardando backend responder..."
-          curl --retry 10 --retry-delay 5 --fail http://backend-homolog:3001/login || (
+          curl --retry 10 --retry-delay 5 --fail http://177.44.248.65:3001/login || (
             echo "❌ API não respondeu, derrubando containers..."
             docker compose -f docker-compose.homolog.yml -p homolog down
             exit 1
@@ -86,7 +86,7 @@ pipeline {
           docker compose -f docker-compose.prod.yml -p prod up -d --build
 
           echo "⏳ Aguardando backend responder..."
-          curl --retry 10 --retry-delay 5 --fail http://backend-prod:3002/login || (
+          curl --retry 10 --retry-delay 5 --fail http://177.44.248.65:3002/login || (
             echo "❌ API não respondeu, derrubando containers..."
             docker compose -f docker-compose.prod.yml -p prod down
             exit 1
