@@ -1,6 +1,7 @@
 steps:
   deploy-homolog:
     image: docker:latest
+    privileged: true
     when:
       branch: homolog
       event: 
@@ -49,6 +50,7 @@ steps:
 
   deploy-prod:
     image: docker:latest
+    privileged: true
     when:
       branch: main
       event: 
