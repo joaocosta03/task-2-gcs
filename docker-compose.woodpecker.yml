@@ -24,10 +24,10 @@ services:
     depends_on:
       - woodpecker-server
     environment:
-      - WOODPECKER_HOST=woodpecker-server
+      - WOODPECKER_SERVER=woodpecker-server
       - WOODPECKER_PORT=9000
       - WOODPECKER_SECRET=5GTPjyLtgHFEvE0FFN0764eJ29Y
-      - WOODPECKER_HEALTHCHECK_ADDR=:3005
+      - WOODPECKER_HEALTHCHECK_ADDR=3005
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
