@@ -23,7 +23,6 @@ services:
       context: .
       dockerfile: Dockerfile.agent
     container_name: woodpecker-agent
-    command: agent
     restart: always
     depends_on:
       - woodpecker-server
