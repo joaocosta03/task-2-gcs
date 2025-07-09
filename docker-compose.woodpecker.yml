@@ -24,7 +24,8 @@ services:
     depends_on:
       - woodpecker-server
     environment:
-      - WOODPECKER_SERVER=http://woodpecker-server:9000
+      - WOODPECKER_SERVER=http://woodpecker-server
+      - WOODPECKER_SERVER_PORT=9000
       - WOODPECKER_SECRET=5GTPjyLtgHFEvE0FFN0764eJ29Y
       - WOODPECKER_HEALTHCHECK_ADDR=:3005
     volumes:
