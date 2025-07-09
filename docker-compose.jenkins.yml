@@ -13,6 +13,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
       - /usr/libexec/docker/cli-plugins:/usr/libexec/docker/cli-plugins
+      - /root/.docker/cli-plugins:/root/.docker/cli-plugins
       - .:/workspace
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
