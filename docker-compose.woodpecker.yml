@@ -29,9 +29,7 @@ services:
       - WOODPECKER_SERVER=woodpecker-server:9000
       - WOODPECKER_SECRET=5GTPjyLtgHFEvE0FFN0764eJ29Y
     volumes:
-      - woodpecker-agent-config:/etc/woodpecker
       - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   woodpecker-data:
-  woodpecker-agent-config:
