@@ -13,4 +13,4 @@ RUN curl -L https://github.com/woodpecker-ci/woodpecker/releases/latest/download
     chmod +x /usr/local/bin/woodpecker-agent
 
 # Define o entrypoint padrão
-ENTRYPOINT ["/usr/local/bin/woodpecker-agent"]
+CMD ["/usr/local/bin/woodpecker-agent"]
