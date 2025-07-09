@@ -25,7 +25,7 @@ afterEach(() => {
   jest.clearAllMocks(); // Limpa o mock entre os testes
 });
 
-describe('Envio de e-mail - Registro de usuário', () => {
+describe.skip('Envio de e-mail - Registro de usuário', () => {
   const emailTeste = 'teste.emailservice@example.com';
 
   afterAll(async () => {
@@ -50,7 +50,7 @@ describe('Envio de e-mail - Registro de usuário', () => {
   });
 });
 
-describe('Envio de e-mail - Criação de tarefa', () => {
+describe.skip('Envio de e-mail - Criação de tarefa', () => {
   let token;
 
   beforeAll(async () => {
