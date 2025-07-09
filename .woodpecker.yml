@@ -1,14 +1,11 @@
 steps:
   deploy-homolog:
     image: docker:latest
-    privileged: true
     when:
       branch: homolog
       event: 
         - push
         - pull_request
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - cd /woodpecker/src/github.com/joaocosta03/task-2-gcs
 
@@ -50,14 +47,11 @@ steps:
 
   deploy-prod:
     image: docker:latest
-    privileged: true
     when:
       branch: main
       event: 
         - push
         - pull_request
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - cd /woodpecker/src/github.com/joaocosta03/task-2-gcs
 
