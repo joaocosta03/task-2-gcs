@@ -1,6 +1,13 @@
 steps:
   deploy-homolog:
     image: docker:latest
+    environment:
+      EMAIL_USER:
+        from_secret: EMAIL_USER
+      EMAIL_PASS:
+        from_secret: EMAIL_PASS
+      JWT_SECRET:
+        from_secret: JWT_SECRET
     when:
       branch: homolog
       event: 
@@ -8,6 +15,11 @@ steps:
         - pull_request
     commands:
       - cd /woodpecker/src/github.com/joaocosta03/task-2-gcs
+
+      - |
+        echo "NODE_ENV=$NODE_ENV" > backend/.env.homolog
+        echo "DB_USER=$DB_USER" >> backend/.env.homolog
+        echo "DB_PASS=$DB_PASS" >> backend/.env.homolog
 
       # Sobe containers de homologação
       - docker-compose -f docker-compose.homolog.yml -p homolog up -d --build
@@ -47,6 +59,13 @@ steps:
 
   deploy-prod:
     image: docker:latest
+    environment:
+      EMAIL_USER:
+        from_secret: EMAIL_USER
+      EMAIL_PASS:
+        from_secret: EMAIL_PASS
+      JWT_SECRET:
+        from_secret: JWT_SECRET
     when:
       branch: main
       event: 
@@ -54,6 +73,11 @@ steps:
         - pull_request
     commands:
       - cd /woodpecker/src/github.com/joaocosta03/task-2-gcs
+
+      - |
+        echo "NODE_ENV=$NODE_ENV" > backend/.env.prod
+        echo "DB_USER=$DB_USER" >> backend/.env.prod
+        echo "DB_PASS=$DB_PASS" >> backend/.env.prod
 
       # Sobe containers de produção
       - docker-compose -f docker-compose.prod.yml -p prod up -d --build
