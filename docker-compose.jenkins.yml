@@ -11,7 +11,8 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker  # acesso ao Docker CLI do host
+      - /usr/bin/docker:/usr/bin/docker
+      - /usr/libexec/docker/cli-plugins:/usr/libexec/docker/cli-plugins
       - .:/workspace
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
