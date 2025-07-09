@@ -30,8 +30,6 @@ services:
       - WOODPECKER_AGENT_SECRET=5GTPjyLtgHFEvE0FFN0764eJ29Y
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/univates/project/task-2-gcs:/home/univates/project/task-2-gcs
-
 
 volumes:
   woodpecker-data:

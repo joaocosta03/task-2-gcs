@@ -1,16 +1,30 @@
 steps:
   deploy-homolog:
     image: docker:latest
+    environment:
+      EMAIL_USER:
+        from_secret: EMAIL_USER
+      EMAIL_PASS:
+        from_secret: EMAIL_PASS
+      JWT_SECRET:
+        from_secret: JWT_SECRET
     when:
       branch: homolog
       event: 
         - push
         - pull_request
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - cd /woodpecker/src/github.com/joaocosta03/task-2-gcs
 
+      - |
+        echo "EMAIL_USER=$EMAIL_USER" > backend/.env.homolog
+        echo "EMAIL_PASS=$EMAIL_PASS" >> backend/.env.homolog
+        echo "JWT_SECRET=$JWT_SECRET" >> backend/.env.homolog
+      
+      if docker ps --format '{{.Names}}' | grep -q "^homolog"; then
+        echo "🛑 Stack homolog já está ativa, reiniciando..."
+        docker-compose -f docker-compose.homolog.yml -p homolog down
+      fi
       # Sobe containers de homologação
       - docker-compose -f docker-compose.homolog.yml -p homolog up -d --build
 
@@ -49,15 +63,25 @@ steps:
 
   deploy-prod:
     image: docker:latest
+    environment:
+      EMAIL_USER:
+        from_secret: EMAIL_USER
+      EMAIL_PASS:
+        from_secret: EMAIL_PASS
+      JWT_SECRET:
+        from_secret: JWT_SECRET
     when:
       branch: main
       event: 
         - push
         - pull_request
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - cd /woodpecker/src/github.com/joaocosta03/task-2-gcs
+
+      - |
+        echo "EMAIL_USER=$EMAIL_USER" > backend/.env.prod
+        echo "EMAIL_PASS=$EMAIL_PASS" >> backend/.env.prod
+        echo "JWT_SECRET=$JWT_SECRET" >> backend/.env.prod
 
       # Sobe containers de produção
       - docker-compose -f docker-compose.prod.yml -p prod up -d --build
