@@ -1,6 +1,6 @@
 steps:
   deploy-homolog:
-    image: docker:latest
+    image: node:20
     when:
       branch: homolog
       event: 
@@ -8,8 +8,43 @@ steps:
         - pull_request
     commands:
       - cd /home/univates/project/task-2-gcs
+      - git checkout homolog
       - git pull origin homolog
+
+      # Sobe containers de homologação
       - docker-compose -f docker-compose.homolog.yml -p homolog up -d --build
+
+      # Aguarda a API subir
+      - echo "⏳ Aguardando backend responder..."
+      - |
+        curl --retry 10 --retry-delay 5 --fail http://localhost:3001/login || (
+          echo "❌ API não respondeu, derrubando containers..."
+          docker-compose -f docker-compose.homolog.yml -p homolog down
+          exit 1
+        )
+      - echo "Ambiente de homologação iniciado!"
+
+      # Executa os testes no backend
+      - cd backend
+      - npm install
+      - npm test || (
+          echo "❌ Testes falharam, derrubando containers..."
+          cd ..
+          docker-compose -f docker-compose.homolog.yml -p homolog down
+          exit 1
+        )
+      - echo "✅ Testes do backend concluídos!"
+
+      # Executa os testes no frontend
+      - cd ../frontend-novo
+      - npx vitest run || (
+          echo "❌ Testes do frontend falharam, derrubando containers..."
+          cd ..
+          docker-compose -f docker-compose.homolog.yml -p homolog down
+          exit 1
+        )
+      - echo "✅ Testes do frontend concluídos!"
+      - echo "✅ Homologação concluída com sucesso!"
 
   deploy-prod:
     image: docker:latest
@@ -17,7 +52,7 @@ steps:
       branch: main
       event: 
         - push
-        - pull_request    
+        - pull_request
     commands:
       - cd /home/univates/project/task-2-gcs
       - git pull origin main
