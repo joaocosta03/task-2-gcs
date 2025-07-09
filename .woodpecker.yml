@@ -21,10 +21,12 @@ steps:
         echo "EMAIL_PASS=$EMAIL_PASS" >> backend/.env.homolog
         echo "JWT_SECRET=$JWT_SECRET" >> backend/.env.homolog
       
-      if docker ps --format '{{.Names}}' | grep -q "^homolog"; then
-        echo "🛑 Stack homolog já está ativa, reiniciando..."
-        docker-compose -f docker-compose.homolog.yml -p homolog down
-      fi
+      - |
+        if docker ps --format '{{.Names}}' | grep -q "^homolog"; then
+          echo "🛑 Stack homolog já está ativa, reiniciando..."
+          docker-compose -f docker-compose.homolog.yml -p homolog down
+        fi
+        
       # Sobe containers de homologação
       - docker-compose -f docker-compose.homolog.yml -p homolog up -d --build
 
