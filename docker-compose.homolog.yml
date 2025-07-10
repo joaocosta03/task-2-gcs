@@ -36,3 +36,10 @@ services:
     ports:
       - "5174:80"
     restart: unless-stopped
+
+  frontend-test:
+    build: ./frontend-novo
+    working_dir: /app
+    command: sh -c "npm ci && npx vitest run"
+    volumes:
+      - ./frontend-novo:/app

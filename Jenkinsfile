@@ -51,14 +51,13 @@ pipeline {
         """
 
         sh """
-          echo "🧪 Executando testes do frontend..."
-          docker exec frontend-homolog npx vitest run || (
-            echo "❌ Testes do frontend falharam!"
-            docker logs frontend-homolog || true
-            docker compose -f docker-compose.homolog.yml -p homolog down
-            exit 1
-          )
-        """
+  			echo "🧪 Executando testes do frontend..."
+  			docker compose -f docker-compose.homolog.yml -p homolog run --rm frontend-test || (
+    		echo "❌ Testes do frontend falharam!"
+    		exit 1
+  			)
+		"""
+
 
         echo "✅ Homologação concluída com sucesso!"
       }
