@@ -43,6 +43,6 @@ services:
       context: ./frontend-novo
       target: builder
     working_dir: /app
-    command: sh -c "npm ci && npx vitest run"
+    command: sh -c "npm install && npx vitest run"
     volumes:
       - ./frontend-novo:/app
