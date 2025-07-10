@@ -50,6 +50,16 @@ pipeline {
 		// 	)
 		// """
 
+		sh """
+		echo '⏳ Aguardando backend responder...'
+		for i in {1..10}; do
+			docker exec backend-homolog curl -s http://localhost:3000/health && break
+			echo '🔁 Aguardando backend...'
+			sleep 2
+		done
+		"""
+
+
         sh """
           echo "🧪 Executando testes do backend..."
           docker exec -e NODE_ENV=test backend-homolog npm test || (
