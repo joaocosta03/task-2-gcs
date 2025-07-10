@@ -27,7 +27,6 @@ services:
       - "5436:5432"
     volumes:
       - ./data-prod:/var/lib/postgresql/data
-      - ./init:/docker-entrypoint-initdb.d
     restart: unless-stopped
 
   frontend:
