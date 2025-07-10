@@ -4,7 +4,10 @@
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
-        "test": "cross-env NODE_ENV=test jest"
+        "test": "cross-env NODE_ENV=test jest",
+        "migrate": "node-pg-migrate up",
+        "migrate-down": "node-pg-migrate down",
+        "migrate-reset": "node-pg-migrate down && node-pg-migrate up"
     },
     "dependencies": {
         "bcrypt": "^5.1.1",
@@ -20,6 +23,7 @@
     "devDependencies": {
         "cross-env": "^7.0.3",
         "jest": "^30.0.3",
+        "node-pg-migrate": "^7.9.1",
         "supertest": "^7.1.1"
     }
 }
