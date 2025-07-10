@@ -21,7 +21,7 @@ services:
         echo '🔁 Executando migrations...'; 
         npx node-pg-migrate -m migrations up &&
         echo '🚀 Iniciando o servidor...'; 
-        node server.js
+        npm start
       "
     volumes:
       - ./backend:/app
@@ -44,3 +44,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  frontend:
+    container_name: frontend-dev
+    build: ./frontend-novo
+    ports:
+      - "5173:80"
+    restart: unless-stopped
+
+volumes:
+  pgdata:
