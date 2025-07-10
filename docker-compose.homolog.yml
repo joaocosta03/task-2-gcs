@@ -38,7 +38,9 @@ services:
     restart: unless-stopped
 
   frontend-test:
-    build: ./frontend-novo
+    build:
+      context: ./frontend-novo
+      target: builder
     working_dir: /app
     command: sh -c "npm ci && npx vitest run"
     volumes:
