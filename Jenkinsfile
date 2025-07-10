@@ -39,6 +39,16 @@ pipeline {
           echo "🔧 Subindo containers de homologação..."
           docker compose -f docker-compose.homolog.yml -p homolog up -d --build
         """
+		sh """
+		echo "📦 Executando migrations do backend..."
+		docker exec -e DATABASE_URL="postgres://postgres:postgres@db:5432/banco_gcs" -it backend-homolog \
+			npx node-pg-migrate -m migrations up || (
+			echo '❌ Falha ao executar migrations!'
+			docker logs backend-homolog || true
+			docker compose -f docker-compose.homolog.yml -p homolog down
+			exit 1
+			)
+		"""
 
         sh """
           echo "🧪 Executando testes do backend..."
@@ -84,6 +94,17 @@ pipeline {
           echo "🚀 Subindo containers de produção..."
           docker compose -f docker-compose.prod.yml -p prod up -d --build
         """
+
+		sh """
+		echo "📦 Executando migrations do backend..."
+		docker exec -e DATABASE_URL="postgres://postgres:postgres@db:5432/banco_gcs" -it backend-prod \
+			npx node-pg-migrate -m migrations up || (
+			echo '❌ Falha ao executar migrations!'
+			docker logs backend-prod || true
+			docker compose -f docker-compose.prod.yml -p prod down
+			exit 1
+			)
+		"""
 
         echo "🚀 Produção implantada com sucesso!"
       }
