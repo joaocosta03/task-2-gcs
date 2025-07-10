@@ -38,6 +38,7 @@ services:
     restart: unless-stopped
 
   frontend-test:
+    profiles: ["test"] 
     build:
       context: ./frontend-novo
       target: builder
