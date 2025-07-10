@@ -52,7 +52,7 @@ pipeline {
 
         sh """
   			echo "🧪 Executando testes do frontend..."
-			docker compose -f docker-compose.homolog.yml -p homolog-test run --rm frontend-test || (
+			docker compose -f docker-compose.homolog.yml --profile test run --rm frontend-test || (
     		echo "❌ Testes do frontend falharam!"
     		exit 1
   			)
