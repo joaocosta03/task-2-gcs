@@ -44,5 +44,5 @@ services:
       target: builder
     working_dir: /app
     command: sh -c "npm install && npx vitest run"
-    volumes:
-      - ./frontend-novo:/app
+    # volumes:
+    #   - ./frontend-novo:/app
