@@ -41,7 +41,7 @@ pipeline {
         """
 		sh """
 		echo "📦 Executando migrations do backend..."
-		docker exec -e DATABASE_URL="postgres://postgres:postgres@db:5432/banco_gcs" -it backend-homolog \
+		docker exec -e DATABASE_URL="postgres://postgres:postgres@db:5432/banco_gcs" backend-homolog \
 			npx node-pg-migrate -m migrations up || (
 			echo '❌ Falha ao executar migrations!'
 			docker logs backend-homolog || true
@@ -97,7 +97,7 @@ pipeline {
 
 		sh """
 		echo "📦 Executando migrations do backend..."
-		docker exec -e DATABASE_URL="postgres://postgres:postgres@db:5432/banco_gcs" -it backend-prod \
+		docker exec -e DATABASE_URL="postgres://postgres:postgres@db:5432/banco_gcs" backend-prod \
 			npx node-pg-migrate -m migrations up || (
 			echo '❌ Falha ao executar migrations!'
 			docker logs backend-prod || true
