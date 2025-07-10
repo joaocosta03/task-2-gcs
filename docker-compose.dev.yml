@@ -18,8 +18,6 @@ services:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/banco_gcs
     command: >
       sh -c "
-        echo '🔁 Executando migrations...'; 
-        npx node-pg-migrate -m migrations up &&
         echo '🚀 Iniciando o servidor...'; 
         npm start
       "
