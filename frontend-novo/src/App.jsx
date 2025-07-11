@@ -24,7 +24,7 @@ function App() {
               <LogoutButton />
             </div>
             <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
-              <h1>Gerenciador de Tarefas final</h1>
+              <h1>Gerenciador de Tarefas</h1>
               <TarefaList />
               <UsuarioList /> 
             </div>
