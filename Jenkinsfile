@@ -103,7 +103,6 @@ pipeline {
 
           echo "🚀 Subindo containers de produção..."
           docker compose -f docker-compose.prod.yml -p prod up -d --build
-		  docker exec db-prod psql -U postgres -d banco_gcs -c "DROP TABLE pgmigrations; DROP TABLE categoria;"
         """
 
 		sh """
