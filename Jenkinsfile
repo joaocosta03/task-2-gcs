@@ -38,7 +38,7 @@ pipeline {
 
           echo "🔧 Subindo containers de homologação..."
           docker compose -f docker-compose.homolog.yml -p homolog up -d --build
-		  docker exec db-homolog psql -U postgres -d banco_gcs -c "DROP TABLE pgmigrations; DROP TABLE categoria; DROP TABLE tarefa;"
+		  docker exec db-homolog psql -U postgres -d banco_gcs -c "DROP TABLE pgmigrations; DROP TABLE categoria;"
         """
 		sh """
 		echo "📦 Executando migrations do backend..."
