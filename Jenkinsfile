@@ -31,13 +31,14 @@ pipeline {
         }
 
         sh """
-          if docker ps --format '{{.Names}}' | grep -q "^homolog"; then
+		  if docker ps --format '{{.Names}}' | grep -q "^homolog"; then
             echo "🛑 Stack homolog já está ativa, reiniciando..."
             docker compose -f docker-compose.homolog.yml -p homolog down
           fi
 
           echo "🔧 Subindo containers de homologação..."
           docker compose -f docker-compose.homolog.yml -p homolog up -d --build
+		  docker exec db-homolog psql -U postgres -d banco_gcs -c "DROP TABLE pgmigrations; DROP TABLE usuario; DROP TABLE tarefas;"
         """
 		sh """
 		echo "📦 Executando migrations do backend..."
