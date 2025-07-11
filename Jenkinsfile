@@ -36,6 +36,9 @@ pipeline {
             docker compose -f docker-compose.homolog.yml -p homolog down
           fi
 
+		  rm -rf data-homolog
+		  rm -rf backend/node_modules
+
           echo "🔧 Subindo containers de homologação..."
           docker compose -f docker-compose.homolog.yml -p homolog up -d --build
         """
